@@ -1,36 +1,12 @@
 "use client";
+import {
+  Pokemon,
+  PokemonAbility,
+  PokemonDetails,
+  PokemonType,
+} from "@/types/pokemonTypes";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-
-interface Pokemon {
-  name: string;
-  url: string;
-}
-
-interface PokemonType {
-  slot: number;
-  type: {
-    name: string;
-    url: string;
-  };
-}
-
-interface PokemonAbility {
-  ability: {
-    name: string;
-    url: string;
-  };
-  is_hidden: boolean;
-  slot: number;
-}
-
-interface PokemonDetails {
-  id: number;
-  name: string;
-  sprite: string;
-  types: PokemonType[];
-  abilities: PokemonAbility[];
-}
 
 const PokemonList = () => {
   const [pokemonData, setPokemonData] = useState<PokemonDetails[]>([]);
