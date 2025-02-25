@@ -7,12 +7,18 @@ import {
 } from "@/types/pokemonTypes";
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
+import Modal from "./Modal";
+import ModalContent from "./ModalContent";
 
 const PokemonList = () => {
   const [pokemonData, setPokemonData] = useState<PokemonDetails[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPokemon, setSelectedPokemon] = useState<PokemonDetails | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchPokemon = async () => {
@@ -50,6 +56,12 @@ const PokemonList = () => {
     fetchPokemon();
   }, []);
 
+  // open modal and set selected pokemon
+  const handleCardClick = (pokemon: PokemonDetails) => {
+    setSelectedPokemon(pokemon);
+    setIsModalOpen(true);
+  };
+
   // sorting does not work need to make it sort when changing and clicking other option
   // also add number sorting
   const sortedPokemon = [...pokemonData].sort((a, b) => {
@@ -78,9 +90,24 @@ const PokemonList = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {sortedPokemon.map((pokemon) => (
-          <Card pokemon={pokemon} key={pokemon.id} />
+          <Card
+            pokemon={pokemon}
+            key={pokemon.id}
+            onClick={() => handleCardClick(pokemon)}
+          />
         ))}
       </div>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title={selectedPokemon?.name}
+      >
+        {selectedPokemon ? (
+          <ModalContent pokemon={selectedPokemon} />
+        ) : (
+          <div></div>
+        )}
+      </Modal>
     </div>
   );
 };

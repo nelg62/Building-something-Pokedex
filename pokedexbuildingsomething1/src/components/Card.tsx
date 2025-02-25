@@ -3,13 +3,15 @@ import Image from "next/image";
 
 interface CardProp {
   pokemon: PokemonDetails;
+  onClick: () => void;
 }
 
-const Card = ({ pokemon }: CardProp) => {
+const Card = ({ pokemon, onClick }: CardProp) => {
   return (
     <div
       key={pokemon.id}
       className="bg-white shadow-lg rounded-lg p-4 flex flex-col items-center transition-transform transform hover:scale-105"
+      onClick={onClick}
     >
       {/* Pokémon Image */}
       <Image
