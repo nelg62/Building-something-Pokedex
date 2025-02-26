@@ -13,8 +13,16 @@ interface StatChartProps {
 }
 
 const StatChart = ({ stats }: StatChartProps) => {
+  const shortenStatName = (name: string) => {
+    const statMap: { [key: string]: string } = {
+      "special-attack": "SP. ATK",
+      "special-defense": "SP. DEF",
+    };
+    return statMap[name] || name.toUpperCase();
+  };
+
   const data = stats.map((s) => ({
-    name: s.stat.name.toUpperCase(),
+    name: shortenStatName(s.stat.name),
     value: s.base_stat,
   }));
   return (
@@ -24,7 +32,7 @@ const StatChart = ({ stats }: StatChartProps) => {
         <YAxis
           dataKey="name"
           type="category"
-          width={100}
+          width={60}
           tick={{ fontSize: 12, textAnchor: "end" }}
         />
 
