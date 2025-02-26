@@ -5,7 +5,7 @@ import {
   PokemonDetails,
   PokemonType,
 } from "@/types/pokemonTypes";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Card from "./Card";
 import Modal from "./Modal";
 import ModalContent from "./ModalContent";
@@ -18,21 +18,46 @@ const PokemonList = () => {
   const [selectedPokemon, setSelectedPokemon] = useState<PokemonDetails | null>(
     null
   );
+  const [nextUrl, setNextUrl] = useState<string | null>(
+    "https://pokeapi.co/api/v2/pokemon?limit=20"
+  );
+
+  const observer = useRef<IntersectionObserver | null>(null);
+  const lastPokemonRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (loading) return;
+      if (observer.current) observer.current.disconnect();
+
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && nextUrl) {
+          fetchMorePokemon();
+        }
+      });
+
+      if (node) observer.current.observe(node);
+    },
+    [loading, nextUrl]
+  );
 
   useEffect(() => {
-    const fetchPokemon = async () => {
-      try {
-        const response = await fetch(
-          "https://pokeapi.co/api/v2/pokemon?limit=20"
-        );
-        if (!response.ok) throw new Error("Failed to fetch Pokemon list");
-        const data = await response.json();
-        const pokemonList: Pokemon[] = data.results;
+    fetchMorePokemon();
+  }, []);
 
-        const pokemonDetails = pokemonList.map(async (pokemon) => {
+  const fetchMorePokemon = async () => {
+    if (!nextUrl) return;
+
+    setLoading(true);
+    try {
+      const response = await fetch(nextUrl);
+      if (!response.ok) throw new Error("Failed to fetch Pokemon list");
+      const data = await response.json();
+
+      const pokemonList: Pokemon[] = data.results;
+
+      const pokemonDetails = await Promise.all(
+        pokemonList.map(async (pokemon) => {
           const res = await fetch(pokemon.url);
           const details = await res.json();
-
           return {
             id: details.id,
             name: details.name,
@@ -42,18 +67,17 @@ const PokemonList = () => {
               (a: PokemonAbility) => a.ability.name
             ),
           };
-        });
+        })
+      );
 
-        const fullDetails = await Promise.all(pokemonDetails);
-        setPokemonData(fullDetails);
-      } catch (err) {
-        setError((err as Error).message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchPokemon();
-  }, []);
+      setPokemonData((prev) => [...prev, ...pokemonDetails]);
+      setNextUrl(data.next);
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // open modal and set selected pokemon
   const handleCardClick = (pokemon: PokemonDetails) => {
@@ -61,7 +85,7 @@ const PokemonList = () => {
     setIsModalOpen(true);
   };
 
-  if (loading) return <p className="text-center text-gray-500">Loading...</p>;
+  // if (loading) return <p className="text-center text-gray-500">Loading...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
@@ -69,14 +93,33 @@ const PokemonList = () => {
       <h1 className="text-3xl font-bold text-center mb-6">Pokémon List</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {pokemonData.map((pokemon) => (
-          <Card
-            pokemon={pokemon}
-            key={pokemon.id}
-            onClick={() => handleCardClick(pokemon)}
-          />
-        ))}
+        {pokemonData.map((pokemon, index) => {
+          if (index === pokemonData.length - 1) {
+            return (
+              <div ref={lastPokemonRef} key={pokemon.id}>
+                <Card
+                  pokemon={pokemon}
+                  onClick={() => handleCardClick(pokemon)}
+                />
+              </div>
+            );
+          }
+          return (
+            <Card
+              pokemon={pokemon}
+              key={pokemon.id}
+              onClick={() => handleCardClick(pokemon)}
+            />
+          );
+        })}
       </div>
+
+      {loading && (
+        <p className="text-center text-gray-500 mt-4">
+          Loading more Pokémon...
+        </p>
+      )}
+
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
