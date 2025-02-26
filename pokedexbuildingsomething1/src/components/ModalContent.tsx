@@ -18,6 +18,14 @@ const ModalContent = ({ pokemon }: ModalContentProps) => {
           width={100}
           priority
         />
+        <Image
+          src={pokemon.shiny}
+          alt={pokemon.name}
+          className="w-24 h-24 object-cover"
+          height={100}
+          width={100}
+          priority
+        />
       </div>
     </div>
   );

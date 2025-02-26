@@ -24,6 +24,7 @@ export interface PokemonDetails {
   id: number;
   name: string;
   sprite: string;
+  shiny: string;
   types: PokemonType[];
   abilities: PokemonAbility[];
 }

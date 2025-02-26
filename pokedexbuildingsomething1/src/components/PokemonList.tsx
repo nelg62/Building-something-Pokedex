@@ -62,6 +62,7 @@ const PokemonList = () => {
             id: details.id,
             name: details.name,
             sprite: details.sprites.front_default,
+            shiny: details.sprites.front_shiny,
             types: details.types.map((t: PokemonType) => t.type.name),
             abilities: details.abilities.map(
               (a: PokemonAbility) => a.ability.name
