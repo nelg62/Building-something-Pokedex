@@ -1,5 +1,6 @@
 import { PokemonDetails } from "@/types/pokemonTypes";
 import Image from "next/image";
+import StatChart from "./StatChart";
 
 interface ModalContentProps {
   pokemon: PokemonDetails;
@@ -28,13 +29,29 @@ const ModalContent = ({ pokemon }: ModalContentProps) => {
         />
       </div>
 
-      <div className="mt-2 bg-gray-100 p-2 rounded-md text-black text-sm">
+      <StatChart stats={pokemon.stats} />
+
+      {/* <div className="mt-2 w-full">
+        {pokemon.stats.map((s) => (
+          <div key={s.stat.name} className="mb-2">
+            <p className="text-xs font-semibold">{s.stat.name.toUpperCase()}</p>
+            <div className="w-full bg-gray-200 rounded-full h-3">
+              <div
+                className="bg-blue-500 h-3 rounded-full"
+                style={{ width: `${(s.base_stat / 150) * 100}%` }} // Normalized to 150 max stat
+              ></div>
+            </div>
+          </div>
+        ))}
+      </div> */}
+
+      {/* <div className="mt-2 bg-gray-100 p-2 rounded-md text-black text-sm">
         {pokemon.stats.map((s) => (
           <p key={s.stat.name}>
             <strong>{s.stat.name.toUpperCase()}:</strong> {s.base_stat}
           </p>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };
