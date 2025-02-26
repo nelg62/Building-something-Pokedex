@@ -3,6 +3,7 @@ import {
   Pokemon,
   PokemonAbility,
   PokemonDetails,
+  PokemonStat,
   PokemonType,
 } from "@/types/pokemonTypes";
 import React, { useCallback, useEffect, useRef, useState } from "react";
@@ -67,6 +68,11 @@ const PokemonList = () => {
             abilities: details.abilities.map(
               (a: PokemonAbility) => a.ability.name
             ),
+            stats: details.stats.map((s: PokemonStat) => ({
+              base_stat: s.base_stat,
+              effort: s.effort,
+              stat: { name: s.stat.name, url: s.stat.url },
+            })),
           };
         })
       );

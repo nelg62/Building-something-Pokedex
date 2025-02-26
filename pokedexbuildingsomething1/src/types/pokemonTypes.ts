@@ -20,6 +20,15 @@ export interface PokemonAbility {
   slot: number;
 }
 
+export interface PokemonStat {
+  base_stat: number;
+  effort: number;
+  stat: {
+    name: string;
+    url: string;
+  };
+}
+
 export interface PokemonDetails {
   id: number;
   name: string;
@@ -27,4 +36,5 @@ export interface PokemonDetails {
   shiny: string;
   types: PokemonType[];
   abilities: PokemonAbility[];
+  stats: PokemonStat[];
 }

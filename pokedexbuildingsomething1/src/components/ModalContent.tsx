@@ -27,6 +27,14 @@ const ModalContent = ({ pokemon }: ModalContentProps) => {
           priority
         />
       </div>
+
+      <div className="mt-2 bg-gray-100 p-2 rounded-md text-black text-sm">
+        {pokemon.stats.map((s) => (
+          <p key={s.stat.name}>
+            <strong>{s.stat.name.toUpperCase()}:</strong> {s.base_stat}
+          </p>
+        ))}
+      </div>
     </div>
   );
 };
