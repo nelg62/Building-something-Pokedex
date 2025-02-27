@@ -9,7 +9,8 @@ import {
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Card from "./Card";
 import Modal from "./Modal";
-import ModalContent from "./ModalContent";
+// import ModalContent from "./ModalContent";
+import IndepthModal from "./IndepthModal";
 
 const PokemonList = () => {
   const [pokemonData, setPokemonData] = useState<PokemonDetails[]>([]);
@@ -132,8 +133,14 @@ const PokemonList = () => {
         onClose={() => setIsModalOpen(false)}
         title={selectedPokemon?.name}
       >
-        {selectedPokemon ? (
+        {/* {selectedPokemon ? (
           <ModalContent pokemon={selectedPokemon} />
+        ) : (
+          <div></div>
+        )} */}
+
+        {selectedPokemon ? (
+          <IndepthModal pokemon={selectedPokemon} />
         ) : (
           <div></div>
         )}

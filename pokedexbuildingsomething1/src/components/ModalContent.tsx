@@ -1,12 +1,19 @@
 import { PokemonDetails } from "@/types/pokemonTypes";
 import Image from "next/image";
-import StatChart from "./StatChart";
+// import StatChart from "./StatChart";
 
 interface ModalContentProps {
   pokemon: PokemonDetails;
 }
 
 const ModalContent = ({ pokemon }: ModalContentProps) => {
+  const shortenStatName = (name: string) => {
+    const statMap: { [key: string]: string } = {
+      "special-attack": "SP. ATK",
+      "special-defense": "SP. DEF",
+    };
+    return statMap[name] || name.toUpperCase();
+  };
   return (
     <div>
       <div>
@@ -29,12 +36,14 @@ const ModalContent = ({ pokemon }: ModalContentProps) => {
         />
       </div>
 
-      <StatChart stats={pokemon.stats} />
+      {/* <StatChart stats={pokemon.stats} /> */}
 
-      {/* <div className="mt-2 w-full">
+      <div className="mt-2 w-full border-4 rounded border-black p-2 bg-cyan-400">
         {pokemon.stats.map((s) => (
           <div key={s.stat.name} className="mb-2">
-            <p className="text-xs font-semibold">{s.stat.name.toUpperCase()}</p>
+            <p className="text-xs font-semibold">
+              {shortenStatName(s.stat.name)}
+            </p>
             <div className="w-full bg-gray-200 rounded-full h-3">
               <div
                 className="bg-blue-500 h-3 rounded-full"
@@ -43,7 +52,7 @@ const ModalContent = ({ pokemon }: ModalContentProps) => {
             </div>
           </div>
         ))}
-      </div> */}
+      </div>
 
       {/* <div className="mt-2 bg-gray-100 p-2 rounded-md text-black text-sm">
         {pokemon.stats.map((s) => (
