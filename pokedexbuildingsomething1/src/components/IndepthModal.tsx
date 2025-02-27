@@ -1,4 +1,5 @@
 import { PokemonDetails } from "@/types/pokemonTypes";
+import Image from "next/image";
 
 interface ModalContentProps {
   pokemon: PokemonDetails;
@@ -50,7 +51,9 @@ const IndepthModal = ({ pokemon }: ModalContentProps) => {
           {/* <span className="text-pink-500 font-bold text-lg">♀</span> */}
           <span className="text-black text-lg font-bold">{pokemon.name}</span>
         </div>
-        <div>
+
+        {/* Pokemon Types */}
+        <div className="flex">
           {pokemon.types?.map((type, index) => (
             <div
               key={index}
@@ -64,6 +67,7 @@ const IndepthModal = ({ pokemon }: ModalContentProps) => {
         </div>
       </div>
 
+      {/* Pokemon stat bars */}
       <div className="grid grid-cols-2 gap-4 bg-white p-4 rounded-lg shadow-md">
         <div className="space-y-2">
           {pokemon.stats.map((stat, index) => (
@@ -83,6 +87,48 @@ const IndepthModal = ({ pokemon }: ModalContentProps) => {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* pokemon picture */}
+        <Image
+          src={pokemon.sprite}
+          alt={pokemon.name}
+          className="w-full h-full object-cover m-auto"
+          height={1000}
+          width={1000}
+          priority
+        />
+
+        {/* pokemon evolution line */}
+        <div className="flex flex-col items-center justify-center space-y-4">
+          <div className="flex items-center space-x-4">
+            <Image
+              src={pokemon.sprite}
+              alt={pokemon.name}
+              className="w-24 h-24 object-cover mx-auto"
+              height={100}
+              width={100}
+              priority
+            />
+            <span>➡️</span>
+            <Image
+              src={pokemon.sprite}
+              alt={pokemon.name}
+              className="w-24 h-24 object-cover mx-auto"
+              height={100}
+              width={100}
+              priority
+            />
+            <span>➡️</span>
+            <Image
+              src={pokemon.sprite}
+              alt={pokemon.name}
+              className="w-24 h-24 object-cover mx-auto"
+              height={100}
+              width={100}
+              priority
+            />
+          </div>
         </div>
       </div>
     </div>
