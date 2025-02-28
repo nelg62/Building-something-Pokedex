@@ -6,6 +6,27 @@ interface CardProp {
   onClick: () => void;
 }
 
+const typeColors: { [key: string]: string } = {
+  normal: "bg-gray-400 hover:bg-gray-500 transition",
+  fire: "bg-red-500 hover:bg-red-600 transition",
+  water: "bg-blue-500 hover:bg-blue-600 transition",
+  grass: "bg-green-500 hover:bg-green-600 transition",
+  electric: "bg-yellow-400 hover:bg-yellow-500 transition",
+  ice: "bg-blue-300 hover:bg-blue-400 transition",
+  fighting: "bg-red-700 hover:bg-red-800 transition",
+  poison: "bg-purple-500 hover:bg-purple-600 transition",
+  ground: "bg-yellow-600 hover:bg-yellow-700 transition",
+  flying: "bg-indigo-400 hover:bg-indigo-500 transition",
+  psychic: "bg-pink-500 hover:bg-pink-600 transition",
+  bug: "bg-green-700 hover:bg-green-800 transition",
+  rock: "bg-yellow-700 hover:bg-yellow-800 transition",
+  ghost: "bg-purple-700 hover:bg-purple-800 transition",
+  dragon: "bg-indigo-700 hover:bg-indigo-800 transition",
+  dark: "bg-gray-700 hover:bg-gray-800 transition",
+  steel: "bg-gray-500 hover:bg-gray-600 transition",
+  fairy: "bg-pink-400 hover:bg-pink-500 transition",
+};
+
 const Card = ({ pokemon, onClick }: CardProp) => {
   return (
     <div
@@ -28,12 +49,23 @@ const Card = ({ pokemon, onClick }: CardProp) => {
       {/* Pokémon Name */}
       <h2 className="text-2xl font-bold capitalize mb-2">{pokemon.name}</h2>
       {/* Pokémon Types */}
-      <p className="text-black bg-yellow-300 rounded-full px-3 py-1 text-sm font-medium mb-1">
-        <strong>Type:</strong> {pokemon.types.join(", ")}
-      </p>
+      <div className="text-black bg-yellow-300 rounded-full px-3 py-1 text-sm font-medium mb-1 flex">
+        <strong className="text-sm px-2 py-1">Type:</strong>{" "}
+        {pokemon.types?.map((type, index) => (
+          <div
+            key={index}
+            className={`text-white text-sm px-2 py-1 rounded-lg capitalize ${
+              typeColors[String(type)] || "bg-gray-500"
+            }`}
+          >
+            {String(type)}
+          </div>
+        )) || <span>No Types Available</span>}
+      </div>
       {/* Pokémon Abilities */}
       <p className="text-black bg-blue-300 rounded-full px-3 py-1 text-sm font-medium">
-        <strong>Abilities:</strong> {pokemon.abilities.join(", ")}
+        <strong className="text-sm px-2 py-1">Abilities:</strong>{" "}
+        {pokemon.abilities.join(", ")}
       </p>
 
       <div className="absolute top-1 left-2 flex space-x-1">

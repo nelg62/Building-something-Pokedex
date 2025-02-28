@@ -6,12 +6,12 @@ interface ModalContentProps {
 }
 
 const statColors: { [key: string]: string } = {
-  hp: "bg-green",
-  attack: "bg-red",
-  defense: "bg-orange",
-  "special-attack": "bg-pink",
-  "special-defense": "bg-yellow",
-  speed: "bg-blue",
+  hp: "bg-green-300",
+  attack: "bg-red-300",
+  defense: "bg-orange-300",
+  "special-attack": "bg-pink-300",
+  "special-defense": "bg-yellow-300",
+  speed: "bg-blue-300",
 };
 
 const typeColors: { [key: string]: string } = {
@@ -75,15 +75,17 @@ const IndepthModal = ({ pokemon }: ModalContentProps) => {
               <span>{shortenStatName(stat.stat.name)}</span>
               <div
                 className={`w-32 ${
-                  statColors[String(stat.stat.name)]
-                }-300 rounded-full h-3`}
+                  statColors[stat.stat.name]
+                } rounded-full h-3`}
               >
                 <div
                   className={`${
-                    statColors[String(stat.stat.name)]
-                  }-500 h-3 rounded-full`}
-                  style={{ width: `${(stat.base_stat / 150) * 100}%` }}
+                    statColors[stat.stat.name].replace("-300", "-500") ||
+                    "bg-orange-500"
+                  } h-3 rounded-full`}
+                  style={{ width: `${(stat.base_stat / 255) * 100}%` }}
                 ></div>
+                <p className="text-center">{stat.base_stat}</p>
               </div>
             </div>
           ))}
@@ -91,9 +93,10 @@ const IndepthModal = ({ pokemon }: ModalContentProps) => {
 
         {/* pokemon picture */}
         <Image
-          src={pokemon.sprite}
+          // src={pokemon.sprite}
+          src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`}
           alt={pokemon.name}
-          className="w-full h-full object-cover m-auto"
+          className="w-100% h-100% object-cover m-auto"
           height={1000}
           width={1000}
           priority
