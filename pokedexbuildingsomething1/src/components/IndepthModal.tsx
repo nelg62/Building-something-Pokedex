@@ -73,6 +73,7 @@ const IndepthModal = ({ pokemon }: ModalContentProps) => {
           {pokemon.stats.map((stat, index) => (
             <div key={index} className="flex justify-between">
               <span>{shortenStatName(stat.stat.name)}</span>
+
               <div
                 className={`w-32 ${
                   statColors[stat.stat.name]
