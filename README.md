@@ -19,7 +19,7 @@ User can see (any other information you want).
 
 -- feature to add
 
--- fix sorting
+-- add sorting
 -- add diferant types of sorting
 -- on click of card open up window to view pokemon in more detail
 -- on detail screen add left and right to next number pokemon
